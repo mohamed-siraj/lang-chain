@@ -1,0 +1,30 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+/back-end/node_modules
+/back-end/__pycache__
+/back-end/database_clients/__pycache__
+/back-end/modules/weaviate/__pycache__
+/back-end/modules/weaviate/dtos/__pycache__
+/front-end/node_modules
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+yarn.lock
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ide
+.vscode/
+package-lock.json

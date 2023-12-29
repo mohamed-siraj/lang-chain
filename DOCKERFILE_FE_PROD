@@ -1,0 +1,35 @@
+FROM node:14-alpine as build
+
+WORKDIR /usr/src/app
+
+# Set build-time environment variables
+ARG REACT_APP_API_BASE
+ARG REACT_APP_LOGIN_URL
+ENV REACT_APP_API_BASE=$REACT_APP_API_BASE
+ENV REACT_APP_LOGIN_URL=$REACT_APP_LOGIN_URL
+
+COPY front-end/package*.json ./
+
+RUN npm install
+
+COPY front-end/ ./
+
+RUN npm run build
+
+##### Runtime Stage #####
+FROM nginx:alpine
+
+COPY front-end/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+
+# Copy the build artifacts from the build stage to the nginx public directory
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+ENV REACT_APP_API_BASE=$REACT_APP_API_BASE
+ENV REACT_APP_LOGIN_URL=$REACT_APP_LOGIN_URL
+
+# The default command to start nginx
+CMD ["nginx", "-g", "daemon off;"]
